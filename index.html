@@ -793,10 +793,10 @@ function toggleEmployerType() {
   }
 }
 
-// ── DATABASE (Firebase Firestore) ──────────────────────────────────────────
-import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+// ── FIREBASE ───────────────────────────────────────────────────────────────
+import { initializeApp }                              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, doc, getDocs,
-         setDoc, deleteDoc }                      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+         setDoc, deleteDoc }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyAkK8lphuHm-9TQ0k1SxczGEKYam8CF-Eg",
@@ -809,21 +809,7 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const firestore   = getFirestore(firebaseApp);
-const COL         = collection(firestore, 'scholars');
-
-async function loadDB() {
-  try {
-    const snap = await getDocs(COL);
-    return snap.docs.map(d => ({ ...d.data(), id: d.id }));
-  } catch(e) {
-    console.error('Firebase load error:', e);
-    return [];
-  }
-}
-
-async function saveDB(records) {
-  // saveDB is now only used for seeding — individual saves go through saveRecord
-}
+const SCHOLARS    = collection(firestore, 'scholars');
 
 function generateId() {
   const now = Date.now().toString(36).toUpperCase();
@@ -832,14 +818,15 @@ function generateId() {
 }
 
 // ── STATE ──────────────────────────────────────────────────────────────────
-let db = loadDB();
+let db = [];
 let filtered = [];
 let editingId = null;
 let page = 1;
 const PAGE_SIZE = 15;
 
-function seedDemo() {
-  if (db.length > 0) return;
+async function seedDemo() {
+  const snap = await getDocs(SCHOLARS);
+  if (!snap.empty) return; // already has data
   const programs = ['BS Computer Science','BS Engineering','BS Nursing','BA Political Science','BS Education','BS Accountancy','BS Architecture'];
   const schools = ['University of the Philippines','Ateneo de Manila','De La Salle University','University of San Carlos','Ateneo de Davao','Bukidnon State University','Central Mindanao University'];
   const statuses = ['still-studying','still-studying','still-studying','graduate','employed','self-employed','graduate-school','unemployed','employed','graduate'];
@@ -849,29 +836,34 @@ function seedDemo() {
     ['Diana','Ocampo'],['Ian','Fernandez'],['Bea','Aquino'],['Aaron','Castillo'],['Mia','Tolentino'],
     ['Rico','Enriquez'],['Nina','Pascual'],['Nico','Evangelista'],['Tere','Bernardo'],['Gab','Santiago'],
   ];
-  db = names.map(([fn,ln],i) => {
-    const birthYear = 1995 + (i % 8);
+  const now = new Date().toISOString();
+  for (let i = 0; i < names.length; i++) {
+    const [fn, ln] = names[i];
+    const birthYear  = 1995 + (i % 8);
     const birthMonth = String((i % 12) + 1).padStart(2,'0');
     const birthDay   = String((i % 28) + 1).padStart(2,'0');
     const birthday   = `${birthYear}-${birthMonth}-${birthDay}`;
-    return {
-      id: generateId(),
+    const status     = statuses[i % statuses.length];
+    const newId      = generateId();
+    const record = {
       firstName: fn, lastName: ln,
       email: `${fn.toLowerCase()}.${ln.toLowerCase()}@email.com`,
       program: programs[i % programs.length],
       school: schools[i % schools.length],
       batch: (i % 20) + 1,
       year: 2019 + (i % 6),
-      status: statuses[i % statuses.length],
+      status,
       contact: `+63 9${String(i).padStart(2,'0')} 000 ${String(i*7).padStart(4,'0')}`,
-      employerType: statuses[i % statuses.length] === 'employed' ? ['government','private','ngo'][i % 3] : null,
+      employerType: status === 'employed' ? ['government','private','ngo'][i % 3] : null,
       birthday,
+      address: 'Malaybalay City, Bukidnon',
       notes: '',
       createdAt: new Date(Date.now() - i * 86400000 * 3).toISOString(),
-      updatedAt: new Date().toISOString(),
+      updatedAt: now,
     };
-  });
-  saveDB(db);
+    await setDoc(doc(firestore, 'scholars', newId), record);
+    db.push({ ...record, id: newId });
+  }
 }
 
 // ── RENDER ─────────────────────────────────────────────────────────────────
@@ -1099,11 +1091,11 @@ async function saveRecord() {
   };
   try {
     if (editingId) {
-      data.updatedAt = now;
       const idx = db.findIndex(r=>r.id===editingId);
-      data.createdAt = db[idx]?.createdAt || now;
+      data.createdAt = idx >= 0 ? (db[idx].createdAt || now) : now;
+      data.updatedAt = now;
       await setDoc(doc(firestore,'scholars',editingId), data);
-      db[idx] = { ...data, id: editingId };
+      if (idx >= 0) db[idx] = { ...data, id: editingId };
       showToast('Record updated successfully.','success');
     } else {
       const newId = generateId();
@@ -1116,20 +1108,25 @@ async function saveRecord() {
     closeModal('formOverlay');
     render();
   } catch(e) {
-    showToast('Error saving record. Check console.','error');
-    console.error(e);
+    showToast('Error saving. Check console (F12).','error');
+    console.error('saveRecord error:', e);
   }
 }
 
-function quickStatus(id, status) {
+async function quickStatus(id, status) {
   if (!status) return;
   const idx = db.findIndex(r=>r.id===id);
   if (idx===-1) return;
-  db[idx].status = status;
-  db[idx].updatedAt = new Date().toISOString();
-  saveDB(db);
-  showToast(`Status updated to "${status}".`,'info');
-  render();
+  const updated = { ...db[idx], status, updatedAt: new Date().toISOString() };
+  try {
+    await setDoc(doc(firestore,'scholars',id), updated);
+    db[idx] = updated;
+    showToast(`Status updated to "${status}".`,'info');
+    render();
+  } catch(e) {
+    showToast('Error updating status.','error');
+    console.error(e);
+  }
 }
 
 function confirmDelete(id) {
@@ -1257,20 +1254,39 @@ function showToast(msg, type='info') {
   setTimeout(()=>t.remove(),3100);
 }
 
+// ── EXPOSE FUNCTIONS TO WINDOW (required for onclick= in module scripts) ───
+window.openAddModal      = openAddModal;
+window.openEditModal     = openEditModal;
+window.saveRecord        = saveRecord;
+window.confirmDelete     = confirmDelete;
+window.quickStatus       = quickStatus;
+window.openDetail        = openDetail;
+window.closeModal        = closeModal;
+window.handleOverlayClick= handleOverlayClick;
+window.exportCSV         = exportCSV;
+window.handleSearch      = handleSearch;
+window.applyFilters      = applyFilters;
+window.setSortBy         = setSortBy;
+window.goPage            = goPage;
+window.filterByStat      = filterByStat;
+window.toggleEmployerType= toggleEmployerType;
+window.updateAgePreview  = updateAgePreview;
+
 // ── INIT ───────────────────────────────────────────────────────────────────
 injectLogos();
-showToast('Connecting to database…', 'info');
-loadDB().then(records => {
-  db = records;
-  if (db.length === 0) seedDemo();
+showToast('Connecting to database…','info');
+getDocs(SCHOLARS).then(async snap => {
+  db = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+  if (db.length === 0) {
+    showToast('Seeding demo data…','info');
+    await seedDemo();
+  }
   render();
-  showToast('Database connected ✓', 'success');
+  showToast('Database connected ✓','success');
 }).catch(e => {
-  showToast('Database connection failed!', 'error');
-  console.error(e);
+  showToast('Database connection failed! Check console.','error');
+  console.error('Firebase init error:', e);
 });
-
-
 </script>
 </body>
 </html>
