@@ -532,221 +532,7 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
-  /* ── LOGIN SCREEN ── */
-  .login-screen {
-    position: fixed; inset: 0;
-    background: var(--bg);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    transition: opacity 0.4s ease;
-  }
-
-  .login-screen.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .login-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    width: 100%;
-    max-width: 420px;
-    padding: 40px 36px 36px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .login-card::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--maroon), var(--accent), var(--sky), var(--accent), var(--maroon));
-  }
-
-  .login-logo-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-
-  .login-logo {
-    width: 88px; height: 88px;
-    border-radius: 50%;
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-glow), 0 8px 24px rgba(0,0,0,0.5);
-    background: #fff;
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .login-logo img { width: 100%; height: 100%; object-fit: cover; }
-
-  .login-title {
-    font-family: 'Cinzel', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-align: center;
-    margin-bottom: 4px;
-  }
-
-  .login-subtitle {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    color: var(--text3);
-    text-align: center;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-  }
-
-  .login-group {
-    display: flex; flex-direction: column; gap: 6px;
-    margin-bottom: 16px;
-  }
-
-  .login-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .login-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 11px 14px;
-    color: var(--text);
-    font-family: 'Crimson Pro', serif;
-    font-size: 1rem;
-    outline: none;
-    width: 100%;
-    transition: border-color var(--transition), box-shadow var(--transition);
-  }
-
-  .login-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-glow);
-  }
-
-  .login-input::placeholder { color: var(--text3); font-style: italic; }
-
-  .login-btn {
-    width: 100%;
-    padding: 13px;
-    background: var(--accent);
-    color: #0e1a10;
-    border: none;
-    border-radius: 8px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: all var(--transition);
-  }
-
-  .login-btn:hover {
-    background: var(--accent2);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(212,168,42,0.35);
-  }
-
-  .login-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .login-error {
-    background: rgba(192,57,43,0.12);
-    border: 1px solid rgba(192,57,43,0.3);
-    border-radius: 8px;
-    padding: 10px 14px;
-    color: var(--danger);
-    font-size: 0.85rem;
-    text-align: center;
-    margin-top: 12px;
-    display: none;
-    font-style: italic;
-  }
-
-  .login-error.show { display: block; }
-
-  .login-motto {
-    text-align: center;
-    margin-top: 20px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    color: var(--text3);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .login-motto span { color: var(--accent); }
-
-  /* ── TOP BAR USER INFO ── */
-  .user-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .user-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text2);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .user-chip .role-badge {
-    background: var(--accent);
-    color: #0e1a10;
-    font-size: 0.58rem;
-    font-weight: 700;
-    padding: 1px 6px;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .user-chip .role-badge.user-role {
-    background: var(--sky);
-    color: #0e1a10;
-  }
-
-  /* ── READ-ONLY NOTICE ── */
-  .readonly-notice {
-    background: rgba(91,163,201,0.1);
-    border: 1px solid rgba(91,163,201,0.25);
-    border-radius: 8px;
-    padding: 9px 16px;
-    font-size: 0.8rem;
-    color: var(--sky);
-    margin-bottom: 16px;
-    font-style: italic;
-    text-align: center;
-    display: none;
-  }
-
-  .readonly-notice.show { display: block; }
+  @media (max-width: 700px) {
     .form-grid { grid-template-columns: 1fr; }
     .stats-bar { gap: 6px; }
     .stat { padding: 8px 10px; min-width: 60px; }
@@ -759,35 +545,7 @@
 </head>
 <body>
 
-<!-- ── LOGIN SCREEN ── -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <div class="login-logo-wrap">
-      <div class="login-logo">
-        <img id="loginLogo" src="" alt="Diocese Logo">
-      </div>
-    </div>
-    <div class="login-title">ScholarTrack</div>
-    <div class="login-subtitle">Diocese of Malaybalay · San Isidro Labrador Cathedral</div>
-
-    <div class="login-group">
-      <label class="login-label">Email Address</label>
-      <input class="login-input" id="loginEmail" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div class="login-group">
-      <label class="login-label">Password</label>
-      <input class="login-input" id="loginPassword" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-
-    <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
-
-    <div class="login-error" id="loginError"></div>
-
-    <div class="login-motto">✦ <span>Ora et Labora</span> · San Isidro Labrador Cathedral Parish ✦</div>
-  </div>
-</div>
-
-<div class="app" id="mainApp" style="display:none">
+<div class="app">
   <header>
     <div class="header-left">
       <div class="logo-ring">
@@ -800,18 +558,7 @@
       </div>
     </div>
     <div class="stats-bar" id="statsBar"></div>
-    <div class="user-bar">
-      <div class="user-chip" id="userChip">
-        <span id="userEmail">—</span>
-        <span class="role-badge" id="roleBadge">—</span>
-      </div>
-      <button class="btn btn-ghost btn-sm" onclick="doLogout()" title="Sign Out" style="padding:6px 12px">⏻ Sign Out</button>
-    </div>
   </header>
-
-  <div class="readonly-notice" id="readonlyNotice">
-    👁 You are signed in as a <strong>Viewer</strong> — you can browse and search records but cannot add, edit, or delete.
-  </div>
 
   <div class="toolbar">
     <div class="search-wrap">
@@ -847,7 +594,7 @@
       <option value="id">Sort: ID</option>
     </select>
     <button class="btn btn-ghost" onclick="exportCSV()">⬇ Export</button>
-    <button class="btn btn-primary" id="addRecordBtn" onclick="openAddModal()">✝ Add Record</button>
+    <button class="btn btn-primary" onclick="openAddModal()">✝ Add Record</button>
   </div>
 
   <div class="table-wrap">
@@ -1010,10 +757,10 @@ const LOGO_B64 = '/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAA
 const LOGO_SRC = 'data:image/png;base64,' + LOGO_B64;
 
 function injectLogos() {
-  document.getElementById('headerLogo').src    = LOGO_SRC;
-  document.getElementById('modalLogoForm').src  = LOGO_SRC;
+  document.getElementById('headerLogo').src = LOGO_SRC;
+  document.getElementById('modalLogoForm').src = LOGO_SRC;
   document.getElementById('modalLogoDetail').src = LOGO_SRC;
-  document.getElementById('loginLogo').src      = LOGO_SRC;
+  // favicon
   const link = document.getElementById('faviconLink');
   link.href = LOGO_SRC;
 }
@@ -1050,8 +797,6 @@ function toggleEmployerType() {
 import { initializeApp }                              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, doc, getDocs,
          setDoc, deleteDoc }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword,
-         signOut, onAuthStateChanged }                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyAkK8lphuHm-9TQ0k1SxczGEKYam8CF-Eg",
@@ -1064,18 +809,7 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const firestore   = getFirestore(firebaseApp);
-const auth        = getAuth(firebaseApp);
 const SCHOLARS    = collection(firestore, 'scholars');
-
-// ── AUTH STATE ─────────────────────────────────────────────────────────────
-let currentUser = null;
-let currentRole = null; // 'admin' | 'user'
-
-// Admin emails — add your admin email(s) here
-const ADMIN_EMAILS = [
-  'admin@scholartracker.com',
-  'diocesemalaybalay@gmail.com'
-];
 
 function generateId() {
   const now = Date.now().toString(36).toUpperCase();
@@ -1256,7 +990,6 @@ function renderTable() {
         </td>
         <td>
           <div class="td-actions" onclick="event.stopPropagation()">
-            ${currentRole==='admin' ? `
             <button class="btn btn-ghost btn-sm" onclick="openEditModal('${r.id}')">✏</button>
             <select class="btn btn-ghost btn-sm" style="padding:5px 8px;font-size:0.7rem" onchange="quickStatus('${r.id}',this.value)">
               <option value="" disabled selected>Status</option>
@@ -1268,7 +1001,6 @@ function renderTable() {
               <option value="unemployed">Unemployed</option>
             </select>
             <button class="btn btn-danger btn-sm" onclick="confirmDelete('${r.id}')">✕</button>
-            ` : `<span style="color:var(--text3);font-size:0.75rem;font-style:italic">View only</span>`}
           </div>
         </td>
       </tr>
@@ -1339,7 +1071,6 @@ function clearForm() {
 }
 
 async function saveRecord() {
-  if (currentRole !== 'admin') { showToast('Access denied. Admin only.','error'); return; }
   const firstName = document.getElementById('fFirstName').value.trim();
   const lastName  = document.getElementById('fLastName').value.trim();
   const email     = document.getElementById('fEmail').value.trim();
@@ -1383,7 +1114,6 @@ async function saveRecord() {
 }
 
 async function quickStatus(id, status) {
-  if (currentRole !== 'admin') { showToast('Access denied. Admin only.','error'); return; }
   if (!status) return;
   const idx = db.findIndex(r=>r.id===id);
   if (idx===-1) return;
@@ -1413,7 +1143,6 @@ function confirmDelete(id) {
 }
 
 async function deleteRecord(id) {
-  if (currentRole !== 'admin') { showToast('Access denied. Admin only.','error'); return; }
   try {
     await deleteDoc(doc(firestore,'scholars',id));
     db = db.filter(r=>r.id!==id);
@@ -1525,74 +1254,7 @@ function showToast(msg, type='info') {
   setTimeout(()=>t.remove(),3100);
 }
 
-// ── AUTH FUNCTIONS ─────────────────────────────────────────────────────────
-async function doLogin() {
-  const email    = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const btn      = document.getElementById('loginBtn');
-  const errEl    = document.getElementById('loginError');
-
-  if (!email || !password) {
-    showLoginError('Please enter your email and password.');
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Signing in…';
-  errEl.classList.remove('show');
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    // onAuthStateChanged will handle the rest
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = 'Sign In';
-    let msg = 'Incorrect email or password.';
-    if (e.code === 'auth/user-not-found')    msg = 'No account found with that email.';
-    if (e.code === 'auth/wrong-password')    msg = 'Incorrect password.';
-    if (e.code === 'auth/invalid-email')     msg = 'Please enter a valid email address.';
-    if (e.code === 'auth/too-many-requests') msg = 'Too many attempts. Please try again later.';
-    if (e.code === 'auth/invalid-credential') msg = 'Incorrect email or password.';
-    showLoginError(msg);
-  }
-}
-
-function showLoginError(msg) {
-  const el = document.getElementById('loginError');
-  el.textContent = msg;
-  el.classList.add('show');
-}
-
-async function doLogout() {
-  try {
-    await signOut(auth);
-    // onAuthStateChanged handles UI reset
-  } catch(e) {
-    console.error('Logout error:', e);
-  }
-}
-
-function applyRoleUI(role) {
-  const isAdmin = role === 'admin';
-
-  // Show/hide add button
-  const addBtn = document.getElementById('addRecordBtn');
-  if (addBtn) addBtn.style.display = isAdmin ? 'flex' : 'none';
-
-  // Show/hide action columns (edit, status, delete buttons in table)
-  // These are rendered dynamically in renderTable — handled via global flag
-
-  // Readonly notice
-  const notice = document.getElementById('readonlyNotice');
-  if (notice) notice.classList.toggle('show', !isAdmin);
-
-  // Role badge
-  const badge = document.getElementById('roleBadge');
-  if (badge) {
-    badge.textContent = isAdmin ? 'Admin' : 'Viewer';
-    badge.className = isAdmin ? 'role-badge' : 'role-badge user-role';
-  }
-}
+// ── EXPOSE FUNCTIONS TO WINDOW (required for onclick= in module scripts) ───
 window.openAddModal      = openAddModal;
 window.openEditModal     = openEditModal;
 window.saveRecord        = saveRecord;
@@ -1609,71 +1271,21 @@ window.goPage            = goPage;
 window.filterByStat      = filterByStat;
 window.toggleEmployerType= toggleEmployerType;
 window.updateAgePreview  = updateAgePreview;
-window.doLogin           = doLogin;
-window.doLogout          = doLogout;
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 injectLogos();
-
-// Listen for auth state changes — this controls showing login vs main app
-onAuthStateChanged(auth, async (user) => {
-  const loginScreen = document.getElementById('loginScreen');
-  const mainApp     = document.getElementById('mainApp');
-  const btn         = document.getElementById('loginBtn');
-
-  if (user) {
-    // ── Logged in ──
-    currentUser = user;
-    currentRole = ADMIN_EMAILS.includes(user.email.toLowerCase()) ? 'admin' : 'user';
-
-    // Update user chip
-    document.getElementById('userEmail').textContent = user.email;
-
-    // Hide login, show app
-    loginScreen.classList.add('hidden');
-    setTimeout(() => { loginScreen.style.display = 'none'; }, 400);
-    mainApp.style.display = 'block';
-
-    // Apply role-based UI
-    applyRoleUI(currentRole);
-
-    // Load data
-    showToast(`Welcome back! Signed in as ${currentRole}.`, 'success');
-    try {
-      const snap = await getDocs(SCHOLARS);
-      db = snap.docs.map(d => ({ ...d.data(), id: d.id }));
-      if (db.length === 0) {
-        showToast('Seeding demo data…', 'info');
-        await seedDemo();
-        const snap2 = await getDocs(SCHOLARS);
-        db = snap2.docs.map(d => ({ ...d.data(), id: d.id }));
-      }
-      render();
-    } catch(e) {
-      showToast('Database connection failed! Check console.', 'error');
-      console.error('Firebase load error:', e);
-    }
-
-  } else {
-    // ── Logged out ──
-    currentUser = null;
-    currentRole = null;
-    db = [];
-
-    // Reset login form
-    if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
-    const errEl = document.getElementById('loginError');
-    if (errEl) errEl.classList.remove('show');
-    const emailEl = document.getElementById('loginEmail');
-    const passEl  = document.getElementById('loginPassword');
-    if (emailEl) emailEl.value = '';
-    if (passEl)  passEl.value  = '';
-
-    // Show login, hide app
-    mainApp.style.display = 'none';
-    loginScreen.style.display = 'flex';
-    loginScreen.classList.remove('hidden');
+showToast('Connecting to database…','info');
+getDocs(SCHOLARS).then(async snap => {
+  db = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+  if (db.length === 0) {
+    showToast('Seeding demo data…','info');
+    await seedDemo();
   }
+  render();
+  showToast('Database connected ✓','success');
+}).catch(e => {
+  showToast('Database connection failed! Check console.','error');
+  console.error('Firebase init error:', e);
 });
 </script>
 </body>
